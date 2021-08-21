@@ -1,2 +1,5 @@
 .bash_history
 .bash_profile
+data_postgres/*
+.nvm
+.c9

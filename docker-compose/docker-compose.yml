@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  nodejs:
+    build: .    # vai constrir imagem da acordo dom Docker file do diretorio
+    image: guisalmeida/ubuntu-ssh-node:latest
+    volumes:
+      - .:/workspace # .(ponto) refere-se ao locla atual assim como pwd.
+    ports:
+      - '22'    # vai ser escolhida uma porta aleatória para mapear com a porta 22 do container
+      - '3090'  # vai ser escolhida uma porta aleatória para mapear com a porta 3090 do container
+    depends_on:
+      - db
+    networks:
+      - my_network
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: guidev
+    ports:
+      - '5432'
+    volumes:
+      - ./dados_postgres:/var/lib/postgresql/data
+    networks:
+      my_network:
+        aliases:
+          - pgsql
+
+networks:
+  my_network:

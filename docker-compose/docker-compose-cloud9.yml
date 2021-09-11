@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  cloud9:
+    image: sapk/cloud9
+    volumes:
+      - .:/workspace # .(ponto) refere-se ao locla atual assim como pwd.
+    ports:
+      - '8181:8181'
+    command: --auth username:password
+
+# docker run -d -v $(pwd):/workspace -p 8181:8181 sapk/cloud9 --auth username:password
+

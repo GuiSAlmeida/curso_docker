@@ -38,7 +38,7 @@ Cria variável de ambinete no container.
 ### Imagens
 Baixar imagem:
 ```
-docker pull <image>:[version]
+docker pull <image>[:image_tag]
 ```
 
 Criar instância de uma imagem (container):
@@ -173,6 +173,109 @@ Conectando e desconectando containers de uma rede:
 docker network connect <network> <container>
 docker network disconnect <network> <container>
 ```
+
+### Dockerfile
+https://docs.docker.com/engine/reference/builder/  
+Criar imagem do zero.
+
+`Dockerfile`
+```docker
+# Comment
+INSTRUCTION arguments
+
+# Example
+RUN echo 'we are running some # of cool things'
+
+# FROM - sets the base image.
+FROM <image> [AS <name>]
+
+# LABEL - adds metadata to an image,
+# replace MAINTAINER(deprecated).
+# Example: LABEL maintainer="Guisalmeida"
+LABEL <key>=<value> <key>=<value> ...
+
+# ADD - copies new files, directories or remote file URLs
+ADD [--chown=<user>:<group>] <src>... <dest>
+
+# COPY - copies new files or directories
+COPY [--chown=<user>:<group>] <src>... <dest>
+
+# RUN - execute any commands in a new layer.
+RUN <command> | ["executable", "param1", "param2"]
+
+# EXPOSE - listens on the specified network ports at runtime.
+EXPOSE <port> [<port>/<protocol>]
+
+# CMD - provide defaults for an executing container.
+CMD <command> <params> | [["executable"], "param1", "param2"]
+
+# USER - sets the user name.
+USER <user>[:<group>] | <UID>[:<GID>]
+
+# VOLUME - creates a mount point with the specified name and marks it as holding esternallymounted volumes from native host or other containers.
+VOLUME ["/path"]
+```
+
+Comando que vai gerar imagem a partir do `Dockerfile`:
+```bash
+docker build [OPTIONS] <PATH | URL>
+
+# options:
+--tag | -t # add tag to an image
+```
+
+### Subir imagem docker hub
+Logar via terminal
+```
+docker login
+```
+
+Subir imagem no [docker hub](https://hub.docker.com/)
+```
+docker push <repository>[:image_tag]  
+```
+
+### 4. Docker Compose
+It is a tool for defining and running **multi-container** Docker applications.
+
+**`docker-compose.yml`**  
+```yml
+version: '3'
+services:
+  web:
+    ports:
+    - '5000:5000'
+  redis:
+    image: redis
+```
+
+Commands to run compose:
+```
+docker-compose up
+
+docker-compose up -d # roda em detach
+
+docker-compose up --scale <service>=<number> # cria um quantidade definida do serviço especificado
+
+docker-compose up --build # cria imagem e sobe conatiner que está especificada na flag build do `docker-compose.yml` que especificar onde está o `Dockerfile` para criação.
+
+docker-compose -f file.yml up # para rodar arquivos com nome diferente
+
+docker-compose down # finaliza e apaga containers criados
+
+docker-compose -f file.yml down # finaliza e apaga containers com nome diferente
+
+docker-compose stop # para container mas não apaga
+
+docker-compose run # cria container rodando um comando especifico na sua criação
+
+docker-compose build # cria imagem que está especificada na flag build do `docker-compose.yml` que especificar onde está o `Dockerfile` para criação.
+```
+#### 4.1. Depends_on
+Quando um serviço depende de outro.
+
+#### 4.2. Networks
+Para adicionar rede ao qual o serviço vai pertencer.
 
 
 
